@@ -30,6 +30,22 @@ class Main(QMainWindow, MainUI):
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget.tabBar().setVisible(False)
         self.tabWidget_2.tabBar().setVisible(False)
+        table1 = self.tableWidget.horizontalHeader()
+        table2 = self.tableWidget_2.horizontalHeader()
+        table3 = self.tableWidget_2.horizontalHeader()
+        table1.setSectionResizeMode(0, QHeaderView.Stretch)
+        table1.setSectionResizeMode(1, QHeaderView.Stretch)
+        table1.setSectionResizeMode(2, QHeaderView.Stretch)
+        table1.setSectionResizeMode(3, QHeaderView.Stretch)
+        table1.setSectionResizeMode(4, QHeaderView.Stretch)
+        table2.setSectionResizeMode(2, QHeaderView.Stretch)
+        table2.setSectionResizeMode(3, QHeaderView.Stretch)
+        table2.setSectionResizeMode(4, QHeaderView.Stretch)
+        table3.setSectionResizeMode(2, QHeaderView.Stretch)
+        table3.setSectionResizeMode(3, QHeaderView.Stretch)
+        table3.setSectionResizeMode(4, QHeaderView.Stretch)
+        self.groupBox.hide()
+
 
     # def DB_Connect(self):
     #     self.db = MySQLdb.connect(host='127.0.0.1', user='root', password='toor', db='crypto')
@@ -37,9 +53,24 @@ class Main(QMainWindow, MainUI):
     #     print("conection accepted")
 
     def Handel_Button(self):
-
         ##########################################################
-        ''' OPEN FILES DIALOG'''
+        ''' OPEN Tabs'''
+        self.pushButton.clicked.connect(self.open_check_in)
+        self.pushButton_3.clicked.connect(self.open_check_out)
+        self.pushButton_6.clicked.connect(self.open_free_rooms)
+        self.pushButton_7.clicked.connect(self.open_current_guest)
+        self.pushButton_12.clicked.connect(self.open_today)
+        self.pushButton_18.clicked.connect(self.open_update_reserve)
+        ##########################################################
+        ''' Back to Home'''
+        self.pushButton_53.clicked.connect(self.back_to_home)
+        self.pushButton_54.clicked.connect(self.back_to_home)
+        self.pushButton_55.clicked.connect(self.back_to_home)
+        self.pushButton_56.clicked.connect(self.back_to_home)
+        self.pushButton_57.clicked.connect(self.back_to_home)
+        self.pushButton_58.clicked.connect(self.back_to_home)
+        self.pushButton_59.clicked.connect(self.back_to_home)
+
         ##########################################################
         ''' SET IMAGES TO UI'''
         # self.label_9.setPixmap(QtGui.QPixmap('lock1.png'))
@@ -48,8 +79,23 @@ class Main(QMainWindow, MainUI):
 ##########################################################################################################
 ##########################################################################################################
     #############################
-    '''GET USER CHOICES FILES '''
+    '''Open Tabs '''
     ############################
+    def open_check_in(self):
+        self.tabWidget.setCurrentIndex(1)
+    def open_check_out(self):
+        self.tabWidget.setCurrentIndex(2)
+    def open_free_rooms(self):
+        self.tabWidget.setCurrentIndex(3)
+    def open_current_guest(self):
+        self.tabWidget.setCurrentIndex(4)
+    def open_today(self):
+        self.tabWidget.setCurrentIndex(5)
+    def open_update_reserve(self):
+        self.tabWidget.setCurrentIndex(6)
+    def back_to_home(self):
+        self.tabWidget.setCurrentIndex(0)
+
 
 
 #######################################################

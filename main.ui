@@ -895,6 +895,16 @@ color : #ffffff
        </rect>
       </property>
      </widget>
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>311</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_13">
      <attribute name="title">

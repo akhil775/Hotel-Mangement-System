@@ -13,6 +13,14 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QStatusBar
+{
+font: 14pt &quot;MS Shell Dlg 2&quot;;
+color :rgb(255, 0, 0) ;
+border :3px solid black;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
@@ -549,7 +557,7 @@ QAbstractSpinBox {
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>7</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -827,17 +835,46 @@ color : #ffffff
        <string>Today Date And Time :</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_19">
+     <widget class="QDateTimeEdit" name="dateTimeEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>200</x>
         <y>10</y>
-        <width>251</width>
-        <height>31</height>
+        <width>181</width>
+        <height>41</height>
        </rect>
       </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>670</y>
+        <width>221</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>14</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+font: 14pt &quot;MS Shell Dlg 2&quot;;
+color : #ffffff
+}</string>
+      </property>
       <property name="text">
-       <string/>
+       <string>Room Mangement</string>
       </property>
      </widget>
     </widget>
@@ -1290,7 +1327,7 @@ color : #rgb(131, 131, 131)
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="widget">
      <attribute name="title">
       <string>Free Rooms</string>
      </attribute>
@@ -1470,7 +1507,7 @@ color : #rgb(131, 131, 131)
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="widget">
      <attribute name="title">
       <string>update Reservation</string>
      </attribute>
@@ -1810,26 +1847,26 @@ color : #ffffff
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_58">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>590</y>
-         <width>111</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton
+     </widget>
+     <widget class="QPushButton" name="pushButton_58">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>680</y>
+        <width>111</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
 {
 font: 14pt &quot;MS Shell Dlg 2&quot;;
 color : #rgb(131, 131, 131)
 }</string>
-       </property>
-       <property name="text">
-        <string>Home</string>
-       </property>
-      </widget>
+      </property>
+      <property name="text">
+       <string>Home</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_39">
@@ -1882,7 +1919,7 @@ color : #rgb(131, 131, 131)
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_44">
        <attribute name="title">
@@ -1981,6 +2018,11 @@ color : #rgb(131, 131, 131)
           <height>71</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
        </widget>
        <widget class="QLineEdit" name="lineEdit_27">
         <property name="geometry">
@@ -1991,15 +2033,10 @@ color : #rgb(131, 131, 131)
           <height>71</height>
          </rect>
         </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_29">
-        <property name="geometry">
-         <rect>
-          <x>440</x>
-          <y>160</y>
-          <width>371</width>
-          <height>71</height>
-         </rect>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_51">
@@ -2040,6 +2077,46 @@ color : #ffffff
           <height>71</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_3">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>160</y>
+          <width>371</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>Delux</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Full Deulx</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Genral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Joint</string>
+         </property>
+        </item>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_45">
@@ -2110,6 +2187,9 @@ color : #ffffff
         </property>
        </widget>
        <widget class="QLineEdit" name="lineEdit_30">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -2117,6 +2197,11 @@ color : #ffffff
           <width>371</width>
           <height>71</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="QLabel" name="label_115">
@@ -2169,27 +2254,10 @@ color : #ffffff
          <string>Update Room</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_31">
-        <property name="geometry">
-         <rect>
-          <x>440</x>
-          <y>60</y>
-          <width>371</width>
-          <height>71</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_32">
-        <property name="geometry">
-         <rect>
-          <x>440</x>
-          <y>160</y>
-          <width>371</width>
-          <height>71</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="lineEdit_33">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -2198,6 +2266,61 @@ color : #ffffff
           <height>71</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_4">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>60</y>
+          <width>371</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_5">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>160</y>
+          <width>371</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>Delux</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Full Deulx</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Genral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Joint</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </widget>

@@ -31,13 +31,15 @@ CREATE TABLE `guests` (
   `phone` varchar(45) DEFAULT NULL,
   `room_number` int DEFAULT NULL,
   `room_type` varchar(45) DEFAULT NULL,
-  `paymen` varchar(45) DEFAULT NULL,
+  `payment` varchar(45) DEFAULT NULL,
+  `from_date` date DEFAULT NULL,
+  `to_date` date DEFAULT NULL,
   `total_price` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `room_number_idx` (`room_number`),
   CONSTRAINT `room_number` FOREIGN KEY (`room_number`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,15 +54,15 @@ CREATE TABLE `history` (
   `guest_id` int DEFAULT NULL,
   `room_number` int DEFAULT NULL,
   `room_price` float DEFAULT NULL,
-  `from` date DEFAULT NULL,
-  `to` date DEFAULT NULL,
-  `type` varchar(45) DEFAULT NULL,
+  `from_` date DEFAULT NULL,
+  `to_` date DEFAULT NULL,
+  `type_` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `room_number_idx` (`room_number`),
   KEY `guest_id_idx` (`guest_id`),
   CONSTRAINT `guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,10 +78,12 @@ CREATE TABLE `rooms` (
   `Room_type` varchar(45) DEFAULT NULL,
   `room_price` float DEFAULT NULL,
   `hotel_id` int DEFAULT NULL,
+  `room_status` int DEFAULT '0',
+  `reserved_counter` int DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `room_number_idx` (`room_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -91,4 +95,4 @@ CREATE TABLE `rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-17  2:45:50
+-- Dump completed on 2020-05-18  4:37:46

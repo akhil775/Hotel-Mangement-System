@@ -18,73 +18,34 @@ USE `hotel`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `guests`
+-- Dumping data for table `guests`
 --
 
-DROP TABLE IF EXISTS `guests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `guests` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `adress` varchar(45) DEFAULT NULL,
-  `phone` varchar(45) DEFAULT NULL,
-  `room_number` int DEFAULT NULL,
-  `room_type` varchar(45) DEFAULT NULL,
-  `payment` varchar(45) DEFAULT NULL,
-  `from_date` date DEFAULT NULL,
-  `to_date` date DEFAULT NULL,
-  `total_price` float DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `room_number_idx` (`room_number`),
-  CONSTRAINT `room_number` FOREIGN KEY (`room_number`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `guests` WRITE;
+/*!40000 ALTER TABLE `guests` DISABLE KEYS */;
+INSERT INTO `guests` VALUES (63,'ayman ahmed mohamed','adress','987654321',1,'Delux','Cash','2020-05-18','2020-05-20',200,'yes'),(64,'ayman','aaaa','1223',1,'Delux','Cash','2020-05-18','2020-05-21',300,'yes'),(65,'ahmed','aaaaa','321',5,'Full Deulx','Cash','2020-05-18','2020-05-21',1800,'yes'),(66,'mohamed','mmmmmmmm','32588888',4,'Joint','Cash','2020-05-18','2020-05-23',2000,'yes'),(67,'mazen ammar','ammmm','32326226',1,'Delux','Cash','2020-05-18','2020-05-20',200,'yes'),(68,'maher','aaaaa','666',3,'Genral','Cash','2020-05-18','2020-05-19',300,'yes'),(69,'mohamed','aaaaaaa','554321332',1,'Delux','Cash','2020-05-19','2020-05-22',300,'yes'),(70,'mazen','ffffff','22344323',4,'Joint','Cash','2020-05-19','2020-05-23',1600,'no'),(71,'ere','eeeeeeee','3333333',6,'Genral','Cash','2020-05-19','2020-05-23',2600,'yes');
+/*!40000 ALTER TABLE `guests` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Table structure for table `history`
+-- Dumping data for table `history`
 --
 
-DROP TABLE IF EXISTS `history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `history` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `guest_id` int DEFAULT NULL,
-  `room_number` int DEFAULT NULL,
-  `room_price` float DEFAULT NULL,
-  `from_` date DEFAULT NULL,
-  `to_` date DEFAULT NULL,
-  `type_` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `room_number_idx` (`room_number`),
-  KEY `guest_id_idx` (`guest_id`),
-  CONSTRAINT `guest_id` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `history` WRITE;
+/*!40000 ALTER TABLE `history` DISABLE KEYS */;
+INSERT INTO `history` VALUES (38,63,1,200,'2020-05-18','2020-05-20','1'),(39,63,1,0,'2020-05-18','2020-05-20','0'),(40,64,1,300,'2020-05-18','2020-05-21','1'),(41,65,5,1800,'2020-05-18','2020-05-21','1'),(42,66,4,2000,'2020-05-18','2020-05-23','1'),(43,63,1,0,'2020-05-18','2020-05-20','0'),(44,67,1,200,'2020-05-18','2020-05-20','1'),(45,67,1,0,'2020-05-18','2020-05-20','0'),(46,68,3,300,'2020-05-18','2020-05-19','1'),(47,68,3,0,'2020-05-18','2020-05-19','0'),(48,65,5,0,'2020-05-18','2020-05-21','0'),(49,66,4,0,'2020-05-18','2020-05-23','0'),(50,66,1,300,'2020-05-19','2020-05-22','1'),(51,70,4,1600,'2020-05-19','2020-05-23','1'),(52,71,6,2600,'2020-05-19','2020-05-23','1'),(53,71,6,0,'2020-05-19','2020-05-23','0'),(54,66,1,0,'2020-05-18','2020-05-23','0');
+/*!40000 ALTER TABLE `history` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Table structure for table `rooms`
+-- Dumping data for table `rooms`
 --
 
-DROP TABLE IF EXISTS `rooms`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `rooms` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `room_number` int NOT NULL,
-  `Room_type` varchar(45) DEFAULT NULL,
-  `room_price` float DEFAULT NULL,
-  `hotel_id` int DEFAULT NULL,
-  `room_status` int DEFAULT '0',
-  `reserved_counter` int DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `room_number_idx` (`room_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `rooms` WRITE;
+/*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+INSERT INTO `rooms` VALUES (1,1,'Delux',100,1,0,4,69),(2,2,'Delux',200,1,0,0,NULL),(3,3,'Genral',300,1,0,1,68),(4,4,'Joint',400,1,1,2,66),(5,5,'Full Deulx',600,1,0,1,65),(6,6,'Genral',650,1,0,1,71),(7,7,'Delux',360,1,0,0,NULL);
+/*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -95,4 +56,4 @@ CREATE TABLE `rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-18  4:37:46
+-- Dump completed on 2020-05-19  5:11:56

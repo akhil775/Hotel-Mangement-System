@@ -62,6 +62,9 @@ class Main(QMainWindow, MainUI):
         self.to_day_and_tomorow()
         self.show_free_and_reserved_rooms()
         self.retrive_history_data()
+        self.get_reversed_rooms()
+        self.get_current_geusts_data()
+        self.get_free_room_last_guest_data()
 #
 
 #############################################
@@ -74,10 +77,10 @@ class Main(QMainWindow, MainUI):
         table1 = self.tableWidget.horizontalHeader()
         table2 = self.tableWidget_2.horizontalHeader()
         table3 = self.tableWidget_3.horizontalHeader()
-        table1.setSectionResizeMode(0, QHeaderView.Stretch)
-        table1.setSectionResizeMode(1, QHeaderView.Stretch)
-        table1.setSectionResizeMode(2, QHeaderView.Stretch)
-        table1.setSectionResizeMode(3, QHeaderView.Stretch)
+        table1.setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        table1.setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        table1.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        table1.setSectionResizeMode(3, QHeaderView.ResizeToContents)
         table1.setSectionResizeMode(4, QHeaderView.Stretch)
         table2.setSectionResizeMode(2, QHeaderView.Stretch)
         table2.setSectionResizeMode(3, QHeaderView.Stretch)
@@ -119,7 +122,7 @@ class Main(QMainWindow, MainUI):
         self.lineEdit_3.textChanged.connect(self.validate_phone_number)
         ##########################################################
         ''' Check Out Mangement'''
-        self.lineEdit_10.returnPressed.connect(self.get_check_out_room_data)
+        self.comboBox_6.activated.connect(self.get_check_out_room_data)
         self.pushButton_40.clicked.connect(self.save_guest_check_out)
         ##########################################################
         ''' OPEN Tabs'''
@@ -154,11 +157,14 @@ class Main(QMainWindow, MainUI):
         self.lineEdit_28.setValidator(validator)
         self.lineEdit_34.setValidator(validator)
     def validate_phone_number(self , phone_number):
-        try :
-            return int(phone_number)
-        except Exception as m :
-            self.statusBar().showMessage('Enter Only numbers')
-            self.lineEdit_3.clear()
+        if self.lineEdit_3.text() != "" :
+            try :
+                return int(phone_number)
+            except Exception as m :
+                self.statusBar().showMessage('Enter Only numbers')
+                self.lineEdit_3.clear()
+
+
 
 
     def add_new_room(self):
@@ -186,6 +192,7 @@ class Main(QMainWindow, MainUI):
                 self.lineEdit_27.clear()
                 self.lineEdit_28.clear()
                 self.lineEdit_34.clear()
+                self.get_free_room_last_guest_data()
             else :
                 self.statusBar().showMessage('Enter All Data' )
         except Exception as m :
@@ -222,6 +229,8 @@ class Main(QMainWindow, MainUI):
             self.statusBar().showMessage('Room Updated Successfully' )
             self.lineEdit_30.clear()
             self.lineEdit_33.clear()
+            self.get_free_room_last_guest_data()
+
 
         except Exception as m :
             print(m)
@@ -257,6 +266,7 @@ class Main(QMainWindow, MainUI):
                     self.comboBox_2.addItem(str(room[0]))
             else:
                 self.comboBox_2.addItem("No Free {} Rooms  ".format(selected_room_type))
+
 
 
     def get_room_price (self) :
@@ -311,7 +321,6 @@ class Main(QMainWindow, MainUI):
                 self.db.commit()
                 self.statusBar().showMessage("Checked In successfully ")
                 self.add_history_record(name, room_number, total_price, today_date, to_date, 1)
-                self.show_free_and_reserved_rooms()
                 self.lineEdit.clear()
                 self.lineEdit_2.clear()
                 self.lineEdit_3.clear()
@@ -325,48 +334,69 @@ class Main(QMainWindow, MainUI):
                 self.radioButton_6.setChecked(False)
                 self.radioButton_8.setChecked(False)
                 self.radioButton_7.setChecked(False)
+                self.show_free_and_reserved_rooms()
+                self.retrive_history_data()
+                self.get_reversed_rooms()
+                self.get_current_geusts_data()
+                self.get_free_room_last_guest_data()
+
             except Exception as m:
                 print(m)
         else :
             self.statusBar().showMessage("Enter Valid Data")
 
 ##########################################################################################################
+##########################################################################################################
         #############################
         '''CHECK OUT Tab '''
         ############################
+    def get_reversed_rooms(self):
+        self.comboBox_6.clear()
+        self.cur.execute('''SELECT room_number FROM rooms WHERE room_status = 1 ''')
+        empty_room = self.cur.fetchall()
+        if empty_room:
+            for room in empty_room:
+                self.comboBox_6.addItem(str(room[0]))
+        else:
+            self.comboBox_6.addItem("No Resversed Rooms")
+
+
+
+
     def get_check_out_room_data(self):
         try :
-            room_number = self.lineEdit_10.text()
-            self.cur.execute('''SELECT guests.name ,rooms.room_status FROM guests JOIN rooms
-                                WHERE guests.room_number = rooms.room_number  AND guests.room_number = %s''',(room_number,))
-            data = self.cur.fetchone()
-            if data[1] == 1 :
-                self.lineEdit_15.setText(data[0])
-            else:
-                self.statusBar().showMessage("Room is Free")
-                self.lineEdit_15.setText("Room is Free")
+            room_number = self.comboBox_6.currentText()
+            if room_number != "No Resversed Rooms" :
+                self.cur.execute('''SELECT  guests.name ,rooms.room_status ,guests.id  FROM guests JOIN rooms
+                                    WHERE guests.room_number = %s AND guests.checked_out !="yes" ''',(room_number,))
+                data = self.cur.fetchone()
+                if data[1] == 1 :
+                    self.lineEdit_15.setText(data[0])
+                    self.label_70.setText(str(data[2]))
+
         except Exception as m:
             print(m)
 #############################
     '''SAVE GUSET CHECK OUT INTO DATABASE  '''
     ############################
     def save_guest_check_out(self):
+        room_number = self.comboBox_6.currentText()
         name = self.lineEdit_15.text()
-        if name != "Room is Free":
-            room_number = self.lineEdit_10.text()
-            self.cur.execute('''UPDATE rooms SET room_status =%s  WHERE room_number = %s''',(0 ,room_number ))
-            self.cur.execute('''SELECT from_date , to_date FROM guests WHERE name =%s ''',(name,))
-            dates = self.cur.fetchone()
-            self.add_history_record(name, room_number, 0, dates[0], dates[1], 0)
-            self.lineEdit_10.clear()
-            self.lineEdit_15.clear()
-            self.db.commit()
-            self.statusBar().showMessage("Checked Out Successfully")
-            self.show_free_and_reserved_rooms()
-        else :
-            self.statusBar().showMessage("Free Rooms Can Not Check Out")
-            self.lineEdit_15.setText("Free Rooms Can Not Check Out")
-
+        guest_code = self.label_70.text()
+        self.cur.execute('''UPDATE rooms SET room_status =%s ,last_guest=%s WHERE room_number = %s''',(0,guest_code,room_number ))
+        self.cur.execute('''UPDATE guests SET checked_out ="yes"  WHERE name = %s''',( name, ))
+        self.cur.execute('''SELECT from_date , to_date FROM guests WHERE name =%s ''',(name,))
+        dates = self.cur.fetchone()
+        self.add_history_record(name, room_number, 0, dates[0], dates[1], 0)
+        self.lineEdit_15.clear()
+        self.label_70.clear()
+        self.db.commit()
+        self.statusBar().showMessage("Checked Out Successfully")
+        self.show_free_and_reserved_rooms()
+        self.get_reversed_rooms()
+        self.retrive_history_data()
+        self.get_current_geusts_data()
+        self.get_free_room_last_guest_data()
     ################################################################
     '''ADD GUSETS RECORD INTO HISTORY TABLE '''
     def add_history_record(self,name,room_number,total_price,today_date, to_date, type_):
@@ -376,6 +406,7 @@ class Main(QMainWindow, MainUI):
             self.cur.execute('''INSERT INTO history (guest_id , room_number , room_price , from_ , to_ , type_)
                                 VALUES (%s,%s,%s,%s,%s,%s)''',(guest_id[0],room_number,total_price,today_date, to_date, type_))
             self.db.commit()
+            self.retrive_history_data()
         except Exception as m:
             print(m)
 
@@ -404,11 +435,12 @@ class Main(QMainWindow, MainUI):
         '''ADD DATA IN HISTORY TAB '''
     ######################################
     def retrive_history_data(self):
+        while self.tableWidget_3.rowCount() > 0:
+            self.tableWidget_3.removeRow(0)
         self.cur.execute('''SELECT h.type_ , h.room_number, g.name, h.from_ , h.to_ ,h.room_price FROM history AS h
-                        JOIN guests AS g WHERE g.id = h.guest_id
+                        JOIN guests AS g WHERE g.id = h.guest_id ORDER BY   h.id
                         ''')
         history_data = self.cur.fetchall()
-        print(history_data)
         for row_number , row_data in enumerate(history_data) :
             self.tableWidget_3.insertRow(row_number)
             for column_number , cloumn_data in enumerate(row_data):
@@ -434,6 +466,52 @@ class Main(QMainWindow, MainUI):
                     cell = QTableWidgetItem(str(cloumn_data))
                     cell.setTextAlignment(Qt.AlignHCenter)
                     self.tableWidget_3.setItem(row_number, column_number, cell)
+##########################################################################################################
+######################################
+    '''GET RESERVED ROOMS DATA AND CURRENT GUESTS'''
+######################################
+    def get_current_geusts_data(self):
+        self.cur.execute('''SELECT room_number , room_type , name , from_date , to_date ,to_date - from_date as left_dayes  FROM guests 
+                        WHERE checked_out='no'
+                        ''')
+        cuurent_guest_data = self.cur.fetchall()
+        while self.tableWidget_2.rowCount() > 0:
+            self.tableWidget_2.removeRow(0)
+        for row_number , row_data in enumerate(cuurent_guest_data) :
+            self.tableWidget_2.insertRow(row_number)
+            for column_number , cloumn_data in enumerate(row_data):
+                    cell = QTableWidgetItem(str(cloumn_data))
+                    cell.setTextAlignment(Qt.AlignHCenter)
+                    self.tableWidget_2.setItem(row_number, column_number, cell)
+
+##########################################################################################################
+######################################
+    '''GET FREE ROOMS DATA AND LAST GUESTS'''
+######################################
+    def get_free_room_last_guest_data(self):
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
+        self.cur.execute('''SELECT  rooms.room_number ,rooms.room_type ,guests.total_price,guests.to_date, guests.name , rooms.reserved_counter  
+                            FROM  rooms  LEFT JOIN  guests  ON  rooms.last_guest =  guests.id WHERE rooms.room_status = 0
+
+                        ''')
+        cuurent_guest_data = self.cur.fetchall()
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
+        for row_number , row_data in enumerate(cuurent_guest_data) :
+            self.tableWidget.insertRow(row_number)
+            for column_number , cloumn_data in enumerate(row_data):
+                    if cloumn_data is None :
+                        cell = QTableWidgetItem(str("----------------"))
+                        cell.setTextAlignment(Qt.AlignHCenter)
+                        self.tableWidget.setItem(row_number, column_number, cell)
+                    else :
+                        cell = QTableWidgetItem(str(cloumn_data))
+                        cell.setTextAlignment(Qt.AlignHCenter)
+                        self.tableWidget.setItem(row_number, column_number, cell)
+
+
+
 
     ##########################################################################################################
     #############################
@@ -445,6 +523,7 @@ class Main(QMainWindow, MainUI):
     def open_check_out(self):
         self.tabWidget.setCurrentIndex(2)
         self.statusBar().showMessage('')
+
     def open_free_rooms(self):
         self.tabWidget.setCurrentIndex(3)
         self.statusBar().showMessage('')
